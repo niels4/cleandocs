@@ -1,12 +1,13 @@
 {fileUtil} = require '../lib/fileUtil.js'
 _ = require 'lodash'
 path = require 'path'
-fs = require 'fs'
+fs = require 'fs-extra'
 
 describe 'fileUtil', ->
 
   docDir = 'test-fixtures/fileUtil/app/docs'
   docSuffix = '.md'
+  outputSuffix = '.markdown'
   expectedDocFiles = [
     'README.md'
     'subdir1/subdir2/subdirFile3.md'
@@ -23,6 +24,7 @@ describe 'fileUtil', ->
     'subdir1/subdir2/subdirFile3.coffee'
     'subdir1/subdirFile1.coffee'
   ]
+
 
   describe 'findFilesWithSuffix ->', ()->
     describe 'when given a valid directory containing files with the docSuffix', ()->
@@ -66,5 +68,25 @@ describe 'fileUtil', ->
   describe 'swapSuffixes ->', ->
     describe 'when file ends with oldSuffix', ->
       it 'should replace the old suffix with the new suffix', ->
-        fileUtil.swapSuffixes(expectedDocFiles[1], docSuffix, srcSuffix)
+        fileUtil.swapSuffixes(docSuffix, srcSuffix, expectedDocFiles[1])
           .should.equal expectedSrcFiles[3]
+
+  describe 'swapSuffixAndCopy ->', ->
+    outDir = "out/test-fixtures/swapSuffixAndCopy"
+    expectedCopiedFiles = [
+      'README.markdown'
+      'subdir1/subdir2/subdirFile3.markdown'
+    ]
+    testFile1 = expectedDocFiles[0]
+    testFile2 = expectedDocFiles[1]
+    swapAndCopyFunc = _.partial fileUtil.swapSuffixAndCopy, docSuffix, outputSuffix, docDir, outDir
+
+    before ->
+      fs.removeSync outDir
+      fs.mkdirs outDir
+
+    it 'should swap the suffixes and copy the file into the new directory, preserving the subdirectory structure', ->
+      swapAndCopyFunc testFile1
+      swapAndCopyFunc testFile2
+      fileUtil.fileExists(outDir, expectedCopiedFiles[0]).should.be.true
+      fileUtil.fileExists(outDir, expectedCopiedFiles[1]).should.be.true

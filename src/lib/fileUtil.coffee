@@ -1,7 +1,7 @@
 path = require 'path'
 Finder = require 'fs-finder'
 _ = require "lodash"
-fs = require 'fs'
+fs = require 'fs-extra'
 
 fileUtil =
   findFilesWithSuffix: (directory, suffix) ->
@@ -17,14 +17,20 @@ fileUtil =
   pairSourceFiles: (srcDir, srcSuffix, docSuffix, docFiles) ->
     docFiles.reduce(((acc, docFile)->
       docFilePair = {}
-      srcFile = fileUtil.swapSuffixes(docFile, docSuffix,  srcSuffix)
+      srcFile = fileUtil.swapSuffixes(docSuffix,  srcSuffix, docFile)
       if fileUtil.fileExists(srcDir, srcFile)
         docFilePair.srcFile = srcFile
       acc[docFile] = docFilePair
       acc
     ), {})
 
-  swapSuffixes: (fileName, oldSuffix, newSuffix) ->
+  swapSuffixes: (oldSuffix, newSuffix, fileName) ->
     fileName.substring(0, fileName.length - oldSuffix.length) + newSuffix
+
+  swapSuffixAndCopy: (oldSuffix, newSuffix, oldDir, newDir, fileName) ->
+    newFileName = fileUtil.swapSuffixes(oldSuffix, newSuffix, fileName)
+    newFilePath = path.join newDir, newFileName
+    oldFilePath = path.join oldDir, fileName
+    fs.copySync oldFilePath, newFilePath
 
 exports.fileUtil = fileUtil
