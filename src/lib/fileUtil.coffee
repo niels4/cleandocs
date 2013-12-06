@@ -33,4 +33,7 @@ fileUtil =
     oldFilePath = path.join oldDir, fileName
     fs.copySync oldFilePath, newFilePath
 
+  getFileLines: (baseDir, relPath) ->
+    fs.readFileSync(path.join(baseDir, relPath)).toString().split('\n')
+
 exports.fileUtil = fileUtil

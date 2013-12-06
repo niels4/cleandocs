@@ -90,3 +90,17 @@ describe 'fileUtil', ->
       swapAndCopyFunc testFile2
       fileUtil.fileExists(outDir, expectedCopiedFiles[0]).should.be.true
       fileUtil.fileExists(outDir, expectedCopiedFiles[1]).should.be.true
+
+  describe 'getFileLines ->', ->
+    expectedLines = [
+      'here is the first line'
+      'heres the second'
+      'the 4th line will be empty'
+      ''
+      'and the last line isn\'t'
+      ''
+    ]
+
+    it 'return an array of lines from the file', ->
+      lines = fileUtil.getFileLines(docDir, expectedDocFiles[0])
+      lines.should.eql expectedLines
