@@ -36,4 +36,11 @@ fileUtil =
   getFileLines: (baseDir, relPath) ->
     fs.readFileSync(path.join(baseDir, relPath)).toString().split('\n')
 
+  cleanDirectory: (dir) ->
+    fs.removeSync dir
+    fs.mkdirs dir
+
+  saveFile: (baseDir, relPath, contents) ->
+    fs.outputFileSync path.join(baseDir, relPath), contents
+
 exports.fileUtil = fileUtil

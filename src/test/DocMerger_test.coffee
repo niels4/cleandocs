@@ -178,3 +178,38 @@ describe 'DocMerger', ->
       defaultTagOrder = ['description', 'untagged']
       completeMergedLines = DocMerger.prependUnmatchedTags(defaultTagOrder, unmatchedTags, mergedLines)
       completeMergedLines.should.eql expectedCompletMergedLines
+
+  describe 'mergeDocFiles ->', ->
+    expectedMergedFile = '''
+      Here is some untagged text
+
+      This is the description section
+      Its just another tag
+
+      this tag won't match any other
+
+          Class SomeTestClass
+      this is very interesting
+
+            constructor: (arg) ->
+              console.log "printing the arg", arg
+
+      This is the last tag of the file
+
+            otherFunc: (arg) ->
+              console.log "heres another function", arg
+
+    '''
+    it 'should create a string from merging the doc file with the source file', ->
+      docLines = fileUtil.getFileLines(docDir, expectedDocFiles[2])
+      srcLines = fileUtil.getFileLines(srcDir, expectedSrcFiles[4])
+      mergedFile = DocMerger.mergeDocFiles
+        docTagStart: docPrefix
+        docTagEnd: docTagEndChar
+        srcTagStart: docPrefix
+        srcTagEnd: docTagEndChar
+        defaultTagOrder: ['untagged', 'description']
+        docLines: docLines
+        srcLines: srcLines
+
+      mergedFile.should.equal expectedMergedFile

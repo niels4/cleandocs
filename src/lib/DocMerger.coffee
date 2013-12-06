@@ -1,7 +1,12 @@
-{fileUtil} = require './fileUtil'
 _ = require 'lodash'
 
 DocMerger =
+  mergeDocFiles: ({docTagStart, docTagEnd, srcTagStart, srcTagEnd, defaultTagOrder, docLines, srcLines}) ->
+    commentSections = DocMerger.parseCommentSections docTagStart, docTagEnd, docLines
+    {mergedLines, unmatchedTags} = DocMerger.mergeCommentTags srcTagStart, srcTagEnd, commentSections, srcLines
+    completeMergedLines = DocMerger.prependUnmatchedTags(defaultTagOrder, unmatchedTags, mergedLines)
+    completeMergedLines.join '\n'
+
   parseCommentSections: (tagPrefix, tagEnd, lines) ->
     lines.reduce(
       ({acc, tag}, line) ->
