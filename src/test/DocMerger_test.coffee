@@ -43,6 +43,10 @@ describe 'DocMerger', ->
       'this is very interesting'
       ''
     ]
+    "won't match": [
+      'this tag won\'t match any other'
+      ''
+    ]
     "last tag": [
       'This is the last tag of the file'
       ''
@@ -88,6 +92,52 @@ describe 'DocMerger', ->
       ''
     ]
     expectedUnmatchedTags =
+      "untagged": [
+        'Here is some untagged text'
+        ''
+      ]
+      "description": [
+        'This is the description section'
+        'Its just another tag'
+        ''
+      ]
+      "won't match": [
+        'this tag won\'t match any other'
+        ''
+      ]
+
+    actualMergedLines = actualUnmatchedTags = null
+    before ->
+      lines = fileUtil.getFileLines(srcDir, expectedSrcFiles[4])
+      {mergedLines, unmatchedTags} = DocMerger.mergeCommentTags(docPrefix, docTagEndChar, expectedCommentTags, lines)
+      actualMergedLines = mergedLines
+      actualUnmatchedTags = unmatchedTags
+
+    it 'Should replace lines that contain tags in the source file with the matching section' +
+    'from the commentTags. Any comments not matched are added to the top of the file.' +
+    'All code should be indented 4 spaces', ->
+      actualMergedLines.should.eql expectedMergedLines
+
+    it 'it should also return a hashmap of unused comment tags', ->
+      actualUnmatchedTags.should.eql expectedUnmatchedTags
+      
+      actualUnmatchedTags.should.eql expectedUnmatchedTags
+
+  describe 'prependUnmatchedTags ->', ->
+    mergedLines = [
+      '    Class SomeTestClass',
+      'this is very interesting',
+      '',
+      '      constructor: (arg) ->',
+      '        console.log "printing the arg", arg',
+      '',
+      'This is the last tag of the file',
+      '',
+      '      otherFunc: (arg) ->',
+      '        console.log "heres another function", arg',
+      ''
+    ]
+    unmatchedTags =
     "untagged": [
       'Here is some untagged text'
       ''
@@ -97,11 +147,34 @@ describe 'DocMerger', ->
       'Its just another tag'
       ''
     ]
+    "won't match": [
+      'this tag won\'t match any other'
+      ''
+    ]
 
-    it 'Should replace lines that contain tags in the source file with the matching section' +
-    'from the commentTags. Any comments not matched are added to the top of the file.' +
-    'All code should be indented 4 spaces', ->
-      lines = fileUtil.getFileLines(srcDir, expectedSrcFiles[4])
-      {mergedLines, unmatchedTags} = DocMerger.mergeCommentTags(docPrefix, docTagEndChar, expectedCommentTags, lines)
-      mergedLines.should.eql expectedMergedLines
-      unmatchedTags.should.eql expectedUnmatchedTags
+    expectedCompletMergedLines = [
+      'This is the description section',
+      'Its just another tag',
+      '',
+      'Here is some untagged text',
+      '',
+      'this tag won\'t match any other',
+      '',
+      '    Class SomeTestClass',
+      'this is very interesting',
+      '',
+      '      constructor: (arg) ->',
+      '        console.log "printing the arg", arg',
+      '',
+      'This is the last tag of the file',
+      '',
+      '      otherFunc: (arg) ->',
+      '        console.log "heres another function", arg',
+      ''
+    ]
+
+    it 'should add the lines in matchedTags to the beginning of mergedLines,' +
+    'It should add the tags in defaultTagOrder first', ->
+      defaultTagOrder = ['description', 'untagged']
+      completeMergedLines = DocMerger.prependUnmatchedTags(defaultTagOrder, unmatchedTags, mergedLines)
+      completeMergedLines.should.eql expectedCompletMergedLines

@@ -33,9 +33,25 @@ DocMerger =
       {mergedLines: [], unmatchedTags: commentTags}
     )
 
-  prependUnmatchedTags: (unmatchedTags, lines) ->
-    _.each unmatchedTags, (tagLines, tagName) ->
-      console.log tagName
+  #WARNING: Mutates unmatchedTags!
+  prependUnmatchedTags: (defaultTagOrder, unmatchedTags, lines) ->
+    firstDocLines = defaultTagOrder.reduce(
+      (unmatchedDocLines, tagName) ->
+        tagLines = unmatchedTags[tagName]
+        delete unmatchedTags[tagName]
+        unmatchedDocLines.concat tagLines
+
+      []
+    )
+
+    remainingDocLines = _.reduce(unmatchedTags,
+      (remainingDocLines, tagLines, tagName) ->
+        remainingDocLines.concat tagLines
+
+      []
+    )
+
+    firstDocLines.concat remainingDocLines.concat lines
 
   findTag: (prefix, endChar, line) ->
     regex = DocMerger.createTagRegex prefix, endChar
