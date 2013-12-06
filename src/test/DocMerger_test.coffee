@@ -2,6 +2,7 @@
 _ = require 'lodash'
 path = require 'path'
 fs = require 'fs-extra'
+{fileUtil} = require '../lib/fileUtil'
 
 describe 'DocMerger', ->
 
@@ -28,32 +29,32 @@ describe 'DocMerger', ->
     'subdir1/subdirFile1.coffee'
   ]
 
+  expectedCommentTags1 =
+    "untagged": [
+      'Here is some untagged text'
+      ''
+    ]
+    "description": [
+      'This is the description section'
+      'Its just another tag'
+      ''
+    ]
+    "interesting thing": [
+      'this is very interesting'
+      ''
+    ]
+    "last tag": [
+      'This is the last tag of the file'
+      ''
+    ]
 
   describe 'parseCommentSections ->', ()->
     describe 'when given a valid file with comment tags', ()->
-      expectedComments =
-        "untagged": [
-          'Here is some untagged text'
-          ''
-        ]
-        "description": [
-          'This is the description section'
-          'Its just another tag'
-          ''
-        ]
-        "interesting thing": [
-          'this is very interesting'
-          ''
-        ]
-        "last tag": [
-          'This is the last tag of the file'
-          ''
-        ]
-
 
       it 'should return an object with each comment tag mapped to its content', ->
-        DocMerger.parseCommentSections(docPrefix, docTagEndChar, docDir, expectedDocFiles[2])
-          .should.eql expectedComments
+        lines = fileUtil.getFileLines(docDir, expectedDocFiles[2])
+        DocMerger.parseCommentSections(docPrefix, docTagEndChar, lines)
+          .should.eql expectedCommentTags1
 
   describe 'findTag ->', ->
     describe 'when given a line with a tag in it', ->
@@ -70,3 +71,37 @@ describe 'DocMerger', ->
       it 'should return null', ->
         (DocMerger.findTag(docPrefix, docTagEndChar, testLine) is null)
           .should.be.true
+
+  describe 'mergeCommentTags ->', ->
+    expectedCommentTags = _.clone expectedCommentTags1
+    expectedMergedLines = [
+      '    Class SomeTestClass',
+      'this is very interesting',
+      '',
+      '      constructor: (arg) ->',
+      '        console.log "printing the arg", arg',
+      '',
+      'This is the last tag of the file',
+      '',
+      '      otherFunc: (arg) ->',
+      '        console.log "heres another function", arg',
+      ''
+    ]
+    expectedUnmatchedTags =
+    "untagged": [
+      'Here is some untagged text'
+      ''
+    ]
+    "description": [
+      'This is the description section'
+      'Its just another tag'
+      ''
+    ]
+
+    it 'Should replace lines that contain tags in the source file with the matching section' +
+    'from the commentTags. Any comments not matched are added to the top of the file.' +
+    'All code should be indented 4 spaces', ->
+      lines = fileUtil.getFileLines(srcDir, expectedSrcFiles[4])
+      {mergedLines, unmatchedTags} = DocMerger.mergeCommentTags(docPrefix, docTagEndChar, expectedCommentTags, lines)
+      mergedLines.should.eql expectedMergedLines
+      unmatchedTags.should.eql expectedUnmatchedTags

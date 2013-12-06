@@ -1,12 +1,8 @@
 {fileUtil} = require './fileUtil'
 _ = require 'lodash'
 
-docTagPrefix = "#*c:"
-docTagEndChar = "*"
-
 DocMerger =
-  parseCommentSections: (tagPrefix, tagEnd, baseDir, relPath) ->
-    lines = fileUtil.getFileLines(baseDir, relPath)
+  parseCommentSections: (tagPrefix, tagEnd, lines) ->
     lines.reduce(
       ({acc, tag}, line) ->
         foundTag = DocMerger.findTag tagPrefix, tagEnd, line
@@ -16,8 +12,30 @@ DocMerger =
         else
           acc[tag].push line
         {acc: acc, tag: tag}
+
       {acc: {untagged: []}, tag: "untagged"}
     ).acc
+
+  #WARNING: Mutates commentTags!
+  mergeCommentTags: (tagPrefix, tagEnd, commentTags, lines) ->
+    lines.reduce(
+      ({mergedLines, unmatchedTags}, line) ->
+        foundTag = DocMerger.findTag tagPrefix, tagEnd, line
+        if foundTag
+          mergedLines = mergedLines.concat commentTags[foundTag]
+          delete commentTags[foundTag]
+        else if line.length
+          mergedLines.push '    ' + line
+        else
+          mergedLines.push ''
+        {mergedLines: mergedLines, unmatchedTags: unmatchedTags}
+
+      {mergedLines: [], unmatchedTags: commentTags}
+    )
+
+  prependUnmatchedTags: (unmatchedTags, lines) ->
+    _.each unmatchedTags, (tagLines, tagName) ->
+      console.log tagName
 
   findTag: (prefix, endChar, line) ->
     regex = DocMerger.createTagRegex prefix, endChar
