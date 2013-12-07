@@ -1,0 +1,13 @@
+{
+  "docSuffix": ".md",
+  "docDir": "test-fixtures/fileUtil/app/docs",
+  "docTagStart": "#*c:",
+  "docTagEnd": "*",
+  "srcSuffix": ".coffee",
+  "srcDir": "test-fixtures/fileUtil/app/scripts",
+  "srcTagStart": "#*c:",
+  "srcTagEnd": "*",
+  "outputSuffix": ".md",
+  "outputDir": "out/test-fixtures/integration-test",
+  "defaultTagOrder": ["untagged", "description"]
+}

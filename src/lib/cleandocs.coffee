@@ -3,17 +3,7 @@
 _ = require 'lodash'
 
 getOptions = ->
-  docSuffix: ".md"
-  docDir: "test-fixtures/fileUtil/app/docs"
-  docTagStart: '#*c:'
-  docTagEnd: '*'
-  srcSuffix: ".coffee"
-  srcDir: "test-fixtures/fileUtil/app/scripts"
-  srcTagStart: '#*c:'
-  srcTagEnd: '*'
-  outputSuffix: ".md"
-  outputDir: 'out/docs'
-  defaultTagOrder: ['untagged', 'description']
+  fileUtil.readJson 'cleandocs.json'
 
 mergeAndWriteAllFiles = (pairedFiles, options) ->
   {docDir, docSuffix, docTagStart, docTagEnd,
@@ -42,6 +32,7 @@ processAllFiles = (options) ->
   console.log "processing all #{options.docSuffix} files in directory #{options.docDir}"
   docFiles = fileUtil.findFilesWithSuffix options.docDir, options.docSuffix
   pairedFiles = fileUtil.pairSourceFiles options.srcDir, options.srcSuffix, options.docSuffix, docFiles
+  mergeAndWriteAllFiles pairedFiles, options
 
 main = ->
   processAllFiles getOptions()

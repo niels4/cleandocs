@@ -43,4 +43,7 @@ fileUtil =
   saveFile: (baseDir, relPath, contents) ->
     fs.outputFileSync path.join(baseDir, relPath), contents
 
+  readJson: (file) ->
+    fs.readJsonSync(file)
+
 exports.fileUtil = fileUtil
