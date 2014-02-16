@@ -2,8 +2,21 @@
 {DocMerger} = require '../lib/DocMerger.js'
 _ = require 'lodash'
 
-getOptions = ->
+readOptionsFile = ->
   fileUtil.readJson 'cleandocs.json'
+
+processOptionsFile = (optionsFile) ->
+  _.map optionsFile.dirs, (nextDirs) ->
+    nextOptions = _.pick optionsFile, 'docSuffix', 'docTagStart', 'docTagEnd',
+      'srcSuffix', 'srcTagStart', 'srcTagEnd', 'outputSuffix',
+      'defaultTagOrder'
+    nextOptions.docDir = nextDirs.docs
+    nextOptions.srcDir = nextDirs.src
+    nextOptions.outputDir = nextDirs.output
+    nextOptions
+
+getOptions = ->
+  processOptionsFile readOptionsFile()
 
 mergeAndWriteAllFiles = (pairedFiles, options) ->
   {docDir, docSuffix, docTagStart, docTagEnd,
@@ -35,7 +48,9 @@ processAllFiles = (options) ->
   mergeAndWriteAllFiles pairedFiles, options
 
 main = ->
-  processAllFiles getOptions()
+  _.forEach getOptions(), (nextOptions) ->
+    processAllFiles nextOptions
 
 exports.main = main
 exports.mergeAndWriteAllFiles = mergeAndWriteAllFiles
+exports.processOptionsFile = processOptionsFile

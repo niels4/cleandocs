@@ -7,7 +7,19 @@
   "srcDir": "src/lib",
   "srcTagStart": "#*c:",
   "srcTagEnd": "*",
-  "outputSuffix": ".md",
+  "outputSuffix": ".litcoffee",
   "outputDir": "out/docs",
-  "defaultTagOrder": ["untagged", "description"]
+  "defaultTagOrder": ["untagged", "description"],
+  "dirs": [
+    {
+      "src": "src/lib",
+      "docs": "src/docs",
+      "output": "out/docs/src"
+    },
+    {
+      "src": "src/test",
+      "docs": "src/test_docs",
+      "output": "out/docs/test"
+    }
+  ]
 }
