@@ -8,6 +8,7 @@ fileUtil =
     files = Finder.from(directory).findFiles "*#{suffix}"
     files.map _.partial(path.relative, directory)
 
+#*c:fileExists*
   fileExists: (baseDir, relPath) ->
     try
       fs.lstatSync(path.join baseDir, relPath).isFile()
@@ -24,6 +25,8 @@ fileUtil =
       acc
     ), {})
 
+  #*c:swapSuffixes*
+  
   swapSuffixes: (oldSuffix, newSuffix, fileName) ->
     fileName.substring(0, fileName.length - oldSuffix.length) + newSuffix
 

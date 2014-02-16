@@ -27,7 +27,9 @@ DocMerger =
       ({mergedLines, unmatchedTags}, line) ->
         foundTag = DocMerger.findTag tagPrefix, tagEnd, line
         if foundTag
+          mergedLines.push ''
           mergedLines = mergedLines.concat commentTags[foundTag]
+          mergedLines.push ''
           delete commentTags[foundTag]
         else if line.length
           mergedLines.push '    ' + line
@@ -48,6 +50,7 @@ DocMerger =
 
       []
     )
+    firstDocLines.push ''
 
     remainingDocLines = _.reduce(unmatchedTags,
       (remainingDocLines, tagLines, tagName) ->
@@ -55,6 +58,8 @@ DocMerger =
 
       []
     )
+
+    remainingDocLines.push ''
 
     firstDocLines.concat remainingDocLines.concat lines
 

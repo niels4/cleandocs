@@ -80,12 +80,16 @@ describe 'DocMerger', ->
     expectedCommentTags = _.clone expectedCommentTags1
     expectedMergedLines = [
       '    Class SomeTestClass',
+      '',
       'this is very interesting',
+      '',
       '',
       '      constructor: (arg) ->',
       '        console.log "printing the arg", arg',
       '',
+      '',
       'This is the last tag of the file',
+      '',
       '',
       '      otherFunc: (arg) ->',
       '        console.log "heres another function", arg',
@@ -158,7 +162,9 @@ describe 'DocMerger', ->
       '',
       'Here is some untagged text',
       '',
+      '',
       'this tag won\'t match any other',
+      '',
       '',
       '    Class SomeTestClass',
       'this is very interesting',
@@ -186,15 +192,21 @@ describe 'DocMerger', ->
       This is the description section
       Its just another tag
 
+
       this tag won't match any other
 
+
           Class SomeTestClass
+
       this is very interesting
+
 
             constructor: (arg) ->
               console.log "printing the arg", arg
 
+
       This is the last tag of the file
+
 
             otherFunc: (arg) ->
               console.log "heres another function", arg
