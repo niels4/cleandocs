@@ -47,10 +47,14 @@ processAllFiles = (options) ->
   pairedFiles = fileUtil.pairSourceFiles options.srcDir, options.srcSuffix, options.docSuffix, docFiles
   mergeAndWriteAllFiles pairedFiles, options
 
-main = ->
-  _.forEach getOptions(), (nextOptions) ->
+processAllDirs = (fileOptions) ->
+  _.forEach processOptionsFile(fileOptions), (nextOptions) ->
     processAllFiles nextOptions
+
+main = ->
+  processAllDirs readOptionsFile()
 
 exports.main = main
 exports.mergeAndWriteAllFiles = mergeAndWriteAllFiles
 exports.processOptionsFile = processOptionsFile
+exports.processAllDirs = processAllDirs
