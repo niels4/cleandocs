@@ -61,21 +61,6 @@ module.exports = (grunt)->
         files: ['src/test/**/*.coffee']
         tasks: ['coffeelint:test', 'coffee:test', 'simplemocha']
     clean: ['out/']
-    cleandocs:
-      all:
-        options:
-          dirs: [
-            {
-              src: "src/lib",
-              docs: "src/docs",
-              output: "out/docs/src"
-            },
-            {
-              src: "src/test",
-              docs: "src/test_docs",
-              output: "out/docs/test"
-            }
-          ]
 
   grunt.event.on 'watch', (action, files, target)->
     grunt.log.writeln "#{target}: #{files} has #{action}"
