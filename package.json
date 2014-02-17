@@ -20,7 +20,7 @@
     "lazy": "~1.0.11"
   },
   "devDependencies": {
-    "grunt-cleandocs":      "0.0.1",
+    "grunt-cleandocs": "git+ssh://eng.protectwise.net/pw/git/niels/grunt-cleandocs",
     "grunt-contrib-watch": "~0.5.0",
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-contrib-clean": "~0.5.0",
