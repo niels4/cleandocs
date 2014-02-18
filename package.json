@@ -1,11 +1,14 @@
 {
   "name": "cleandocs",
   "version": "0.0.1",
-  "repository": "x",
   "description": "Merge code and markdown files to create project documentation",
   "author": {
     "name": "Niels Nielsen",
     "email": "niels@protectwise.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/niels4/cleandocs"
   },
   "licenses": [
     {
