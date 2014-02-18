@@ -48,6 +48,7 @@
         outFileName = fileUtil.swapSuffixes(docSuffix, outputSuffix, docFileName);
         return fileUtil.saveFile(outputDir, outFileName, mergedFile);
       } else {
+        console.log("doing nothing");
         return fileUtil.swapSuffixAndCopy(docSuffix, outputSuffix, docDir, outputDir, docFileName);
       }
     });

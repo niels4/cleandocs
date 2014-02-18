@@ -39,6 +39,7 @@ mergeAndWriteAllFiles = (pairedFiles, options) ->
       outFileName = fileUtil.swapSuffixes docSuffix, outputSuffix, docFileName
       fileUtil.saveFile outputDir, outFileName, mergedFile
     else
+      console.log "doing nothing"
       fileUtil.swapSuffixAndCopy docSuffix, outputSuffix, docDir, outputDir, docFileName
 
 processAllFiles = (options) ->

@@ -1,5 +1,7 @@
 (function() {
-  var cleandocs, _;
+  var cleandocs, fileUtil, _;
+
+  fileUtil = require('../lib/fileUtil.js').fileUtil;
 
   cleandocs = require('../lib/cleandocs.js');
 
@@ -15,7 +17,7 @@
         srcSuffix: ".coffee",
         srcTagStart: '#*c:',
         srcTagEnd: '*',
-        outputSuffix: ".markdown",
+        outputSuffix: ".litcoffee",
         defaultTagOrder: ['untagged', 'description'],
         dirs: [
           {
@@ -36,7 +38,8 @@
       });
     });
     return describe('mergeAndWriteAllFiles ->', function() {
-      var options, pairedFiles;
+      var expectedDocFiles, options, pairedFiles;
+      expectedDocFiles = ['README.litcoffee', 'subdir1/subdir2/subdirFile3.litcoffee', 'subdir1/subdirFile1.litcoffee', 'subdir1/subdirFile2.litcoffee'];
       pairedFiles = {
         'README.md': {},
         'subdir1/subdir2/subdirFile3.md': {
@@ -56,12 +59,15 @@
         srcDir: "test-fixtures/fileUtil/app/scripts",
         srcTagStart: '#*c:',
         srcTagEnd: '*',
-        outputSuffix: ".markdown",
+        outputSuffix: ".litcoffee",
         outputDir: 'out/test-fixtures/mergeAndWriteFiles',
         defaultTagOrder: ['untagged', 'description']
       };
       return it('should merge all of the comment files and write them to the output directory', function() {
-        return cleandocs.mergeAndWriteAllFiles(pairedFiles, options);
+        cleandocs.mergeAndWriteAllFiles(pairedFiles, options);
+        return _.forEach(expectedDocFiles, function(nextExpectFile) {
+          return fileUtil.fileExists(options.outputDir, nextExpectFile).should.be["true"];
+        });
       });
     });
   });

@@ -59,8 +59,10 @@ module.exports = (grunt)->
         tasks: ['coffeelint:lib', 'coffee:lib', 'simplemocha']
       test:
         files: ['src/test/**/*.coffee']
-        tasks: ['coffeelint:test', 'coffee:test', 'simplemocha']
-    clean: ['out/']
+        tasks: ['coffeelint:test', 'clean:test', 'coffee:test', 'simplemocha']
+    clean:
+      compile: ['out/']
+      test: ['out/test-fixtures']
 
   grunt.event.on 'watch', (action, files, target)->
     grunt.log.writeln "#{target}: #{files} has #{action}"
@@ -83,11 +85,12 @@ module.exports = (grunt)->
   ]
 
   grunt.registerTask 'test', [
+    'clean:test'
     'simplemocha'
   ]
 
   grunt.registerTask 'default', [
-    'clean'
+    'clean:compile'
     'compile'
     'test'
   ]
