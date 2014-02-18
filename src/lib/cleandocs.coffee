@@ -22,11 +22,14 @@ mergeAndWriteAllFiles = (pairedFiles, options) ->
   {docDir, docSuffix, docTagStart, docTagEnd,
     srcDir, srcSuffix, srcTagStart, srcTagEnd,
     outputDir, outputSuffix, defaultTagOrder} = options
+
   fileUtil.cleanDirectory outputDir
+
   _.each pairedFiles, (docFile, docFileName) ->
+    docLines = fileUtil.getFileLines docDir, docFileName
+    outFileName = fileUtil.swapSuffixes docSuffix, outputSuffix, docFileName
     if docFile.srcFile
       srcFileName = fileUtil.swapSuffixes docSuffix, srcSuffix, docFileName
-      docLines = fileUtil.getFileLines docDir, docFileName
       srcLines = fileUtil.getFileLines srcDir, srcFileName
       mergedFile = DocMerger.mergeDocFiles
         docTagStart: docTagStart
@@ -36,11 +39,10 @@ mergeAndWriteAllFiles = (pairedFiles, options) ->
         defaultTagOrder: defaultTagOrder
         docLines: docLines
         srcLines: srcLines
-      outFileName = fileUtil.swapSuffixes docSuffix, outputSuffix, docFileName
-      fileUtil.saveFile outputDir, outFileName, mergedFile
     else
-      console.log "doing nothing"
-      fileUtil.swapSuffixAndCopy docSuffix, outputSuffix, docDir, outputDir, docFileName
+      mergedFile = docLines
+
+    fileUtil.saveFile outputDir, outFileName, mergedFile
 
 processAllFiles = (options) ->
   console.log "processing all #{options.docSuffix} files in directory #{options.docDir}"

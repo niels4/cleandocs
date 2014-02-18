@@ -32,9 +32,10 @@
     fileUtil.cleanDirectory(outputDir);
     return _.each(pairedFiles, function(docFile, docFileName) {
       var docLines, mergedFile, outFileName, srcFileName, srcLines;
+      docLines = fileUtil.getFileLines(docDir, docFileName);
+      outFileName = fileUtil.swapSuffixes(docSuffix, outputSuffix, docFileName);
       if (docFile.srcFile) {
         srcFileName = fileUtil.swapSuffixes(docSuffix, srcSuffix, docFileName);
-        docLines = fileUtil.getFileLines(docDir, docFileName);
         srcLines = fileUtil.getFileLines(srcDir, srcFileName);
         mergedFile = DocMerger.mergeDocFiles({
           docTagStart: docTagStart,
@@ -45,12 +46,10 @@
           docLines: docLines,
           srcLines: srcLines
         });
-        outFileName = fileUtil.swapSuffixes(docSuffix, outputSuffix, docFileName);
-        return fileUtil.saveFile(outputDir, outFileName, mergedFile);
       } else {
-        console.log("doing nothing");
-        return fileUtil.swapSuffixAndCopy(docSuffix, outputSuffix, docDir, outputDir, docFileName);
+        mergedFile = docLines;
       }
+      return fileUtil.saveFile(outputDir, outFileName, mergedFile);
     });
   };
 
