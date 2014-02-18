@@ -1,4 +1,4 @@
-# cleanDocs
+# cleandocs
 
 Merge code and markdown files to create project documentation.
 
