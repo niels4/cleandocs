@@ -22,6 +22,7 @@ doccoFile = (fileName, fileContents, baseOutput) ->
   fs.mkdirsSync output
   css = path.relative(path.join(baseOutput, fileName, "../"),
     path.join(baseOutput, "docco.css"))
+
   template = (templateArgs) ->
     templateArgs.css = css
     jstTemplate templateArgs
