@@ -24,7 +24,7 @@
   processOptionsFile = function(optionsFile) {
     return _.map(optionsFile.dirs, function(nextDirs) {
       var nextOptions;
-      nextOptions = _.pick(optionsFile, 'docSuffix', 'docTagStart', 'docTagEnd', 'srcSuffix', 'srcTagStart', 'srcTagEnd', 'outputSuffix', 'defaultTagOrder');
+      nextOptions = _.pick(optionsFile, 'docSuffix', 'docTagStart', 'docTagEnd', 'srcSuffix', 'srcTagStart', 'srcTagEnd', 'outputSuffix', 'defaultTagOrder', 'docco');
       nextOptions.docDir = nextDirs.docs;
       nextOptions.srcDir = nextDirs.src;
       nextOptions.outputDir = nextDirs.output;

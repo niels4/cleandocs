@@ -9,6 +9,8 @@ DOCCO_STYLE = 'parallel'
 languages = fs.readJsonSync(path.join('node_modules', 'docco',
   'resources', 'languages.json'))
 
+languages = docco.buildMatchers languages
+
 jstTemplate = _.template fs.readFileSync(path.join('node_modules', 'docco',
       'resources', DOCCO_STYLE, 'docco.jst')).toString()
 

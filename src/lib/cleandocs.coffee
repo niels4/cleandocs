@@ -15,7 +15,7 @@ processOptionsFile = (optionsFile) ->
   _.map optionsFile.dirs, (nextDirs) ->
     nextOptions = _.pick optionsFile, 'docSuffix', 'docTagStart', 'docTagEnd',
       'srcSuffix', 'srcTagStart', 'srcTagEnd', 'outputSuffix',
-      'defaultTagOrder'
+      'defaultTagOrder', 'docco'
     nextOptions.docDir = nextDirs.docs
     nextOptions.srcDir = nextDirs.src
     nextOptions.outputDir = nextDirs.output
