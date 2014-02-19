@@ -1,5 +1,7 @@
 (function() {
-  var docco, doccoFile, fs, languages, path, _;
+  var DOCCO_STYLE, docco, doccoFile, fileUtil, fs, languages, path, template, _;
+
+  fileUtil = require('../lib/fileUtil').fileUtil;
 
   docco = require("docco");
 
@@ -9,13 +11,23 @@
 
   fs = require('fs-extra');
 
-  languages = path.join(__dirname, 'node_modules', 'docco', 'resources', 'languages.json');
+  DOCCO_STYLE = 'parallel';
 
-  doccoFile = function(fileName, fileContents, baseDir) {
-    var config;
-    config = {};
-    config.languages = languages;
-    return docco.parse(fileName, fileContents, config);
+  languages = fs.readJsonSync(path.join('node_modules', 'docco', 'resources', 'languages.json'));
+
+  template = _.template(fs.readFileSync(path.join('node_modules', 'docco', 'resources', DOCCO_STYLE, 'docco.jst')).toString());
+
+  doccoFile = function(fileName, fileContents, output) {
+    var config, css, sections;
+    css = "test.css";
+    config = {
+      languages: languages,
+      template: template,
+      output: output,
+      css: css
+    };
+    sections = docco.parse(fileName, fileContents, config);
+    return docco.format(fileName, sections, config);
   };
 
   _.extend(exports, {

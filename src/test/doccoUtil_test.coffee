@@ -1,16 +1,18 @@
 {fileUtil} = require '../lib/fileUtil'
 fs = require 'fs-extra'
+path = require 'path'
 doccoUtil = require '../lib/doccoUtil'
 _ = require 'lodash'
 
 describe 'doccoUtil', ->
   
   describe 'doccoFile ->', ->
-    testFileName = 'test-fixtures/doccoUtil/test_source.litcoffee'
+    testOutput = 'test-fixtures/doccoUtil'
+    testFileName = 'subdir/test_source.litcoffee'
     testFile = null
 
     before ->
-      testFile = fs.readFileSync(testFileName)
+      testFile = fs.readFileSync(path.join(testOutput, testFileName))
         .toString()
 
     it 'should be a function', ->
@@ -18,6 +20,6 @@ describe 'doccoUtil', ->
 
     it 'should do something', ->
       console.log "testFile:", testFile
-      result = doccoUtil.doccoFile(testFileName, testFile)
+      result = doccoUtil.doccoFile(testFileName, testFile, testOutput)
       console.log "result:", result
       result.should.be.ok
