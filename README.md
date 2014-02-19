@@ -25,6 +25,9 @@ each source directory you wish to document (Usually its just src and test).
 Then from the same directory as the cleandocs.json file, type cleandocs.
 The files should be merged and output into the directory specified in the json config file.
 
+If the {docco: true} option is set, the files will also be passed through docco
+and converted into HTML files. Directory structure is preserved.
+
 ## Examples
 For an example of using cleandocs from the grunt plugin, see [grunt-cleandocs](https://github.com/niels4/grunt-cleandocs).
 
@@ -48,7 +51,6 @@ Then run clean docs and verify that the literate coffeescript files were generat
 ## Future plans
 
 *  Expand the documentation using cleandocs
-*  Pass the litcoffe files through docco to create a static site of html files
 *  Create a searchable table of contents page based off of the files created
 *  Export documentation as static site at the end of the grunt build task
 

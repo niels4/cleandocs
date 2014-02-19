@@ -1,6 +1,6 @@
 {
   "name": "cleandocs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Merge code and markdown files to create project documentation",
   "author": {
     "name": "Niels Nielsen",
