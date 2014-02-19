@@ -1,9 +1,11 @@
 (function() {
-  var DocMerger, fileUtil, getOptions, main, mergeAndWriteAllFiles, processAllDirs, processAllFiles, processOptionsFile, readOptionsFile, _;
+  var DocMerger, doccoUtil, fileUtil, getOptions, main, mergeAndWriteAllFiles, processAllDirs, processAllFiles, processOptionsFile, readOptionsFile, _;
 
   fileUtil = require('./fileUtil').fileUtil;
 
-  DocMerger = require('../lib/DocMerger.js').DocMerger;
+  DocMerger = require('./DocMerger').DocMerger;
+
+  doccoUtil = require('./doccoUtil');
 
   _ = require('lodash');
 
@@ -27,8 +29,8 @@
   };
 
   mergeAndWriteAllFiles = function(pairedFiles, options) {
-    var defaultTagOrder, docDir, docSuffix, docTagEnd, docTagStart, outputDir, outputSuffix, srcDir, srcSuffix, srcTagEnd, srcTagStart;
-    docDir = options.docDir, docSuffix = options.docSuffix, docTagStart = options.docTagStart, docTagEnd = options.docTagEnd, srcDir = options.srcDir, srcSuffix = options.srcSuffix, srcTagStart = options.srcTagStart, srcTagEnd = options.srcTagEnd, outputDir = options.outputDir, outputSuffix = options.outputSuffix, defaultTagOrder = options.defaultTagOrder;
+    var defaultTagOrder, docDir, docSuffix, docTagEnd, docTagStart, docco, outputDir, outputSuffix, srcDir, srcSuffix, srcTagEnd, srcTagStart;
+    docDir = options.docDir, docSuffix = options.docSuffix, docTagStart = options.docTagStart, docTagEnd = options.docTagEnd, srcDir = options.srcDir, srcSuffix = options.srcSuffix, srcTagStart = options.srcTagStart, srcTagEnd = options.srcTagEnd, outputDir = options.outputDir, outputSuffix = options.outputSuffix, defaultTagOrder = options.defaultTagOrder, docco = options.docco;
     fileUtil.cleanDirectory(outputDir);
     return _.each(pairedFiles, function(docFile, docFileName) {
       var docLines, mergedFile, outFileName, srcFileName, srcLines;
@@ -48,6 +50,9 @@
         });
       } else {
         mergedFile = docLines.join("\n");
+      }
+      if (docco) {
+        doccoUtil.doccoFile(outFileName, mergedFile, outputDir);
       }
       return fileUtil.saveFile(outputDir, outFileName, mergedFile);
     });

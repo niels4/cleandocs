@@ -60,13 +60,32 @@
         srcTagStart: '#*c:',
         srcTagEnd: '*',
         outputSuffix: ".litcoffee",
-        outputDir: 'out/test-fixtures/mergeAndWriteFiles',
+        outputDir: 'out/test-fixtures/writeFilesWithDocco',
         defaultTagOrder: ['untagged', 'description']
       };
-      return it('should merge all of the comment files and write them to the output directory', function() {
-        cleandocs.mergeAndWriteAllFiles(pairedFiles, options);
-        return _.forEach(expectedDocFiles, function(nextExpectFile) {
-          return fileUtil.fileExists(options.outputDir, nextExpectFile).should.be["true"];
+      describe('without docco', function() {
+        before(function() {
+          return cleandocs.mergeAndWriteAllFiles(pairedFiles, options);
+        });
+        return it('should merge all of the comment files and write them to the output directory', function() {
+          return _.forEach(expectedDocFiles, function(nextExpectFile) {
+            return fileUtil.fileExists(options.outputDir, nextExpectFile).should.be["true"];
+          });
+        });
+      });
+      return describe('with docco', function() {
+        var expectedDoccoFiles;
+        options = _.extend(_.clone(options), {
+          docco: true
+        });
+        before(function() {
+          return cleandocs.mergeAndWriteAllFiles(pairedFiles, options);
+        });
+        expectedDoccoFiles = ['README.html', 'subdir1/subdir2/subdirFile3.html', 'subdir1/subdirFile1.html', 'subdir1/subdirFile2.html'];
+        return it('should run each merged file through docco', function() {
+          return _.forEach(expectedDoccoFiles, function(nextExpectFile) {
+            return fileUtil.fileExists(options.outputDir, nextExpectFile).should.be["true"];
+          });
         });
       });
     });

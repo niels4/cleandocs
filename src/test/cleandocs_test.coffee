@@ -59,10 +59,31 @@ describe 'cleandocs', ->
       srcTagStart: '#*c:'
       srcTagEnd: '*'
       outputSuffix: ".litcoffee"
-      outputDir: 'out/test-fixtures/mergeAndWriteFiles'
+      outputDir: 'out/test-fixtures/writeFilesWithDocco'
       defaultTagOrder: ['untagged', 'description']
 
-    it 'should merge all of the comment files and write them to the output directory', ->
-      cleandocs.mergeAndWriteAllFiles pairedFiles, options
-      _.forEach expectedDocFiles, (nextExpectFile) ->
-        fileUtil.fileExists(options.outputDir, nextExpectFile).should.be.true
+    describe 'without docco', ->
+      before ->
+        cleandocs.mergeAndWriteAllFiles pairedFiles, options
+        
+      it 'should merge all of the comment files and write them to the output directory', ->
+        _.forEach expectedDocFiles, (nextExpectFile) ->
+          fileUtil.fileExists(options.outputDir, nextExpectFile).should.be.true
+
+    describe 'with docco', ->
+      options = _.extend _.clone(options),
+        docco: true
+
+      before ->
+        cleandocs.mergeAndWriteAllFiles pairedFiles, options
+
+      expectedDoccoFiles = [
+        'README.html'
+        'subdir1/subdir2/subdirFile3.html'
+        'subdir1/subdirFile1.html'
+        'subdir1/subdirFile2.html'
+      ]
+
+      it 'should run each merged file through docco', ->
+        _.forEach expectedDoccoFiles, (nextExpectFile) ->
+          fileUtil.fileExists(options.outputDir, nextExpectFile).should.be.true

@@ -1,5 +1,6 @@
 {fileUtil} = require './fileUtil'
-{DocMerger} = require '../lib/DocMerger.js'
+{DocMerger} = require './DocMerger'
+doccoUtil = require './doccoUtil'
 _ = require 'lodash'
 
 readOptionsFile = ->
@@ -19,9 +20,8 @@ getOptions = ->
   processOptionsFile readOptionsFile()
 
 mergeAndWriteAllFiles = (pairedFiles, options) ->
-  {docDir, docSuffix, docTagStart, docTagEnd,
-    srcDir, srcSuffix, srcTagStart, srcTagEnd,
-    outputDir, outputSuffix, defaultTagOrder} = options
+  {docDir, docSuffix, docTagStart, docTagEnd, srcDir, srcSuffix, srcTagStart,
+    srcTagEnd, outputDir, outputSuffix, defaultTagOrder, docco} = options
 
   fileUtil.cleanDirectory outputDir
 
@@ -41,6 +41,10 @@ mergeAndWriteAllFiles = (pairedFiles, options) ->
         srcLines: srcLines
     else
       mergedFile = docLines.join "\n"
+
+
+    if docco
+      doccoUtil.doccoFile outFileName, mergedFile, outputDir
 
     fileUtil.saveFile outputDir, outFileName, mergedFile
 
