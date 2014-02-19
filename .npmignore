@@ -9,6 +9,7 @@ src/
 /out/bin/
 /out/docs/
 /out/test/
+/out/test-fixtures/
 
 .git/
 .gitignore
