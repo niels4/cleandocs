@@ -19,7 +19,7 @@
     "fs-finder": "~1.7.4",
     "lodash": "~2.4.1",
     "fs-extra": "~0.8.1",
-    "docco": "~0.6.3"
+    "docco-with-write-function": "~0.6.3"
   },
   "devDependencies": {
     "grunt-contrib-watch": "~0.5.0",

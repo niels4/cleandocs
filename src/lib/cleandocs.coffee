@@ -4,7 +4,7 @@ path = require "path"
 doccoUtil = require './doccoUtil'
 _ = require 'lodash'
 
-doccoCssDir = "node_modules/docco/resources/parallel"
+doccoCssDir = "node_modules/#{doccoUtil.DOCCO_MODULE}/resources/parallel"
 doccoCssFile = "docco.css"
 doccoPublicDir = "public"
 

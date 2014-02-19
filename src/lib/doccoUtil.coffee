@@ -1,17 +1,18 @@
 {fileUtil} = require '../lib/fileUtil'
-docco = require "docco"
+docco = require "docco-with-write-function"
 _ = require "lodash"
 path = require 'path'
 fs = require 'fs-extra'
 
 DOCCO_STYLE = 'parallel'
+DOCCO_MODULE =  "docco-with-write-function"
 
-languages = fs.readJsonSync(path.join('node_modules', 'docco',
+languages = fs.readJsonSync(path.join('node_modules', DOCCO_MODULE,
   'resources', 'languages.json'))
 
 languages = docco.buildMatchers languages
 
-jstTemplate = _.template fs.readFileSync(path.join('node_modules', 'docco',
+jstTemplate = _.template fs.readFileSync(path.join('node_modules', DOCCO_MODULE,
       'resources', DOCCO_STYLE, 'docco.jst')).toString()
 
 sources = []
@@ -32,4 +33,4 @@ doccoFile = (fileName, fileContents, baseOutput) ->
   docco.format source, sections, config
   docco.write source, sections, config
 
-_.extend exports, {doccoFile}
+_.extend exports, {doccoFile, DOCCO_MODULE}
