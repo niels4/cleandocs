@@ -1,5 +1,5 @@
 (function() {
-  var DOCCO_MODULE, DOCCO_STYLE, docco, doccoFile, fileUtil, fs, jstTemplate, languages, path, sources, _;
+  var DOCCO_MODULE, DOCCO_STYLE, docco, doccoFile, fileUtil, fs, jstTemplate, languages, path, resourcesDir, sources, styleDir, _;
 
   fileUtil = require('../lib/fileUtil').fileUtil;
 
@@ -15,11 +15,15 @@
 
   DOCCO_MODULE = "docco-with-write-function";
 
-  languages = fs.readJsonSync(path.join('node_modules', DOCCO_MODULE, 'resources', 'languages.json'));
+  resourcesDir = path.join(__dirname, "../../node_modules", DOCCO_MODULE, 'resources');
+
+  styleDir = path.join(resourcesDir, DOCCO_STYLE);
+
+  languages = fs.readJsonSync(path.join(resourcesDir, 'languages.json'));
 
   languages = docco.buildMatchers(languages);
 
-  jstTemplate = _.template(fs.readFileSync(path.join('node_modules', DOCCO_MODULE, 'resources', DOCCO_STYLE, 'docco.jst')).toString());
+  jstTemplate = _.template(fs.readFileSync(path.join(styleDir, 'docco.jst')).toString());
 
   sources = [];
 
@@ -47,7 +51,7 @@
 
   _.extend(exports, {
     doccoFile: doccoFile,
-    DOCCO_MODULE: DOCCO_MODULE
+    styleDir: styleDir
   });
 
 }).call(this);

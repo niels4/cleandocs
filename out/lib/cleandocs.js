@@ -11,7 +11,7 @@
 
   _ = require('lodash');
 
-  doccoCssDir = "node_modules/" + doccoUtil.DOCCO_MODULE + "/resources/parallel";
+  doccoCssDir = doccoUtil.styleDir;
 
   doccoCssFile = "docco.css";
 

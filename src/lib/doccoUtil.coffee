@@ -6,14 +6,14 @@ fs = require 'fs-extra'
 
 DOCCO_STYLE = 'parallel'
 DOCCO_MODULE =  "docco-with-write-function"
+resourcesDir = path.join __dirname, "../../node_modules", DOCCO_MODULE,
+  'resources'
+styleDir = path.join resourcesDir, DOCCO_STYLE
 
-languages = fs.readJsonSync(path.join('node_modules', DOCCO_MODULE,
-  'resources', 'languages.json'))
-
+languages = fs.readJsonSync(path.join(resourcesDir, 'languages.json'))
 languages = docco.buildMatchers languages
 
-jstTemplate = _.template fs.readFileSync(path.join('node_modules', DOCCO_MODULE,
-      'resources', DOCCO_STYLE, 'docco.jst')).toString()
+jstTemplate = _.template fs.readFileSync(path.join(styleDir, 'docco.jst')).toString()
 
 sources = []
 
@@ -33,4 +33,4 @@ doccoFile = (fileName, fileContents, baseOutput) ->
   docco.format source, sections, config
   docco.write source, sections, config
 
-_.extend exports, {doccoFile, DOCCO_MODULE}
+_.extend exports, {doccoFile, styleDir}
