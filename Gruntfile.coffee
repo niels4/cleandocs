@@ -56,7 +56,7 @@ module.exports = (grunt)->
         tasks: ['coffeelint:gruntfile']
       lib:
         files: ['src/lib/**/*.coffee']
-        tasks: ['coffeelint:lib', 'coffee:lib', 'simplemocha']
+        tasks: ['coffeelint:lib','clean:test', 'coffee:lib', 'simplemocha']
       test:
         files: ['src/test/**/*.coffee']
         tasks: ['coffeelint:test', 'clean:test', 'coffee:test', 'simplemocha']

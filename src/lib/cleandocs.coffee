@@ -40,7 +40,7 @@ mergeAndWriteAllFiles = (pairedFiles, options) ->
         docLines: docLines
         srcLines: srcLines
     else
-      mergedFile = docLines
+      mergedFile = docLines.join "\n"
 
     fileUtil.saveFile outputDir, outFileName, mergedFile
 

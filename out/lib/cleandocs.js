@@ -47,7 +47,7 @@
           srcLines: srcLines
         });
       } else {
-        mergedFile = docLines;
+        mergedFile = docLines.join("\n");
       }
       return fileUtil.saveFile(outputDir, outFileName, mergedFile);
     });
