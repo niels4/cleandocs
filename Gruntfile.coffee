@@ -43,7 +43,7 @@ module.exports = (grunt)->
           'out/test/**/*.js'
         ]
         options:
-          globals: ['should']
+          globals: ['should', 'heading']
           timeout: 3000
           ignoreLeaks: false
           ui: 'bdd'

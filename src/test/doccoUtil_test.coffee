@@ -7,19 +7,17 @@ _ = require 'lodash'
 describe 'doccoUtil', ->
   
   describe 'doccoFile ->', ->
-    testOutput = 'test-fixtures/doccoUtil'
+    testBasedir = 'test-fixtures/doccoUtil'
+    testOutput = 'out/test/doccoUtil/test1'
     testFileName = 'subdir/test_source.litcoffee'
     testFile = null
 
     before ->
-      testFile = fs.readFileSync(path.join(testOutput, testFileName))
+      testFile = fs.readFileSync(path.join(testBasedir, testFileName))
         .toString()
 
     it 'should be a function', ->
       doccoUtil.doccoFile.should.be.a 'function'
 
-    it 'should do something', ->
-      console.log "testFile:", testFile
-      result = doccoUtil.doccoFile(testFileName, testFile, testOutput)
-      console.log "result:", result
-      result.should.be.ok
+    it 'parse and write the file out to html', ->
+      doccoUtil.doccoFile(testFileName, testFile, testBasedir, testOutput)

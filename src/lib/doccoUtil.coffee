@@ -12,10 +12,14 @@ languages = fs.readJsonSync(path.join('node_modules', 'docco',
 template = _.template fs.readFileSync(path.join('node_modules', 'docco',
   'resources', DOCCO_STYLE, 'docco.jst')).toString()
 
-doccoFile = (fileName, fileContents, output) ->
+sources = []
+
+doccoFile = (fileName, fileContents, basedir, baseOutput) ->
+  output = baseOutput
   css = "test.css"
-  config = {languages, template, output, css}
+  config = {languages, template, output, css, sources}
   sections = docco.parse fileName, fileContents, config
   docco.format fileName, sections, config
+  docco.write fileName, sections, config
 
 _.extend exports, {doccoFile}

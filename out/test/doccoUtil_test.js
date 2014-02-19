@@ -13,22 +13,19 @@
 
   describe('doccoUtil', function() {
     return describe('doccoFile ->', function() {
-      var testFile, testFileName, testOutput;
-      testOutput = 'test-fixtures/doccoUtil';
+      var testBasedir, testFile, testFileName, testOutput;
+      testBasedir = 'test-fixtures/doccoUtil';
+      testOutput = 'out/test/doccoUtil/test1';
       testFileName = 'subdir/test_source.litcoffee';
       testFile = null;
       before(function() {
-        return testFile = fs.readFileSync(path.join(testOutput, testFileName)).toString();
+        return testFile = fs.readFileSync(path.join(testBasedir, testFileName)).toString();
       });
       it('should be a function', function() {
         return doccoUtil.doccoFile.should.be.a('function');
       });
-      return it('should do something', function() {
-        var result;
-        console.log("testFile:", testFile);
-        result = doccoUtil.doccoFile(testFileName, testFile, testOutput);
-        console.log("result:", result);
-        return result.should.be.ok;
+      return it('parse and write the file out to html', function() {
+        return doccoUtil.doccoFile(testFileName, testFile, testBasedir, testOutput);
       });
     });
   });
