@@ -51,7 +51,7 @@
     },
     cleanDirectory: function(dir) {
       fs.removeSync(dir);
-      return fs.mkdirs(dir);
+      return fs.mkdirsSync(dir);
     },
     saveFile: function(baseDir, relPath, contents) {
       return fs.outputFileSync(path.join(baseDir, relPath), contents);

@@ -14,12 +14,14 @@ template = _.template fs.readFileSync(path.join('node_modules', 'docco',
 
 sources = []
 
-doccoFile = (fileName, fileContents, basedir, baseOutput) ->
-  output = baseOutput
+doccoFile = (fileName, fileContents, baseOutput) ->
+  output = path.join(baseOutput, path.dirname(fileName))
+  source = path.basename(fileName)
+  fs.mkdirsSync output
   css = "test.css"
   config = {languages, template, output, css, sources}
-  sections = docco.parse fileName, fileContents, config
-  docco.format fileName, sections, config
-  docco.write fileName, sections, config
+  sections = docco.parse source, fileContents, config
+  docco.format source, sections, config
+  docco.write source, sections, config
 
 _.extend exports, {doccoFile}

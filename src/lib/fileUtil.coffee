@@ -41,7 +41,7 @@ fileUtil =
 
   cleanDirectory: (dir) ->
     fs.removeSync dir
-    fs.mkdirs dir
+    fs.mkdirsSync dir
 
   saveFile: (baseDir, relPath, contents) ->
     fs.outputFileSync path.join(baseDir, relPath), contents

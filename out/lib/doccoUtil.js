@@ -19,9 +19,11 @@
 
   sources = [];
 
-  doccoFile = function(fileName, fileContents, basedir, baseOutput) {
-    var config, css, output, sections;
-    output = baseOutput;
+  doccoFile = function(fileName, fileContents, baseOutput) {
+    var config, css, output, sections, source;
+    output = path.join(baseOutput, path.dirname(fileName));
+    source = path.basename(fileName);
+    fs.mkdirsSync(output);
     css = "test.css";
     config = {
       languages: languages,
@@ -30,9 +32,9 @@
       css: css,
       sources: sources
     };
-    sections = docco.parse(fileName, fileContents, config);
-    docco.format(fileName, sections, config);
-    return docco.write(fileName, sections, config);
+    sections = docco.parse(source, fileContents, config);
+    docco.format(source, sections, config);
+    return docco.write(source, sections, config);
   };
 
   _.extend(exports, {

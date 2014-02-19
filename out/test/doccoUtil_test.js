@@ -15,7 +15,7 @@
     return describe('doccoFile ->', function() {
       var testBasedir, testFile, testFileName, testOutput;
       testBasedir = 'test-fixtures/doccoUtil';
-      testOutput = 'out/test/doccoUtil/test1';
+      testOutput = 'out/test-fixtures/doccoUtil/test1';
       testFileName = 'subdir/test_source.litcoffee';
       testFile = null;
       before(function() {
@@ -25,7 +25,8 @@
         return doccoUtil.doccoFile.should.be.a('function');
       });
       return it('parse and write the file out to html', function() {
-        return doccoUtil.doccoFile(testFileName, testFile, testBasedir, testOutput);
+        doccoUtil.doccoFile(testFileName, testFile, testOutput);
+        return fileUtil.fileExists(testOutput, 'subdir/test_source.html').should.be["true"];
       });
     });
   });

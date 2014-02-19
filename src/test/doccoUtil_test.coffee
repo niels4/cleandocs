@@ -8,7 +8,7 @@ describe 'doccoUtil', ->
   
   describe 'doccoFile ->', ->
     testBasedir = 'test-fixtures/doccoUtil'
-    testOutput = 'out/test/doccoUtil/test1'
+    testOutput = 'out/test-fixtures/doccoUtil/test1'
     testFileName = 'subdir/test_source.litcoffee'
     testFile = null
 
@@ -20,4 +20,5 @@ describe 'doccoUtil', ->
       doccoUtil.doccoFile.should.be.a 'function'
 
     it 'parse and write the file out to html', ->
-      doccoUtil.doccoFile(testFileName, testFile, testBasedir, testOutput)
+      doccoUtil.doccoFile(testFileName, testFile, testOutput)
+      fileUtil.fileExists(testOutput, 'subdir/test_source.html').should.be.true
