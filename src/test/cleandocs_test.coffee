@@ -39,7 +39,6 @@ describe 'cleandocs', ->
       'subdir1/subdir2/subdirFile3.litcoffee'
       'subdir1/subdirFile1.litcoffee'
       'subdir1/subdirFile2.litcoffee'
-      'docco.css'
     ]
 
     pairedFiles =
@@ -88,3 +87,7 @@ describe 'cleandocs', ->
       it 'should run each merged file through docco', ->
         _.forEach expectedDoccoFiles, (nextExpectFile) ->
           fileUtil.fileExists(options.outputDir, nextExpectFile).should.be.true
+
+      it 'should copy over the static css files and assets', ->
+        fileUtil.fileExists(options.outputDir, 'docco.css').should.be.true
+        fileUtil.dirExists(options.outputDir, 'public').should.be.true

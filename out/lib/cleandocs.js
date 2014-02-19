@@ -1,13 +1,21 @@
 (function() {
-  var DocMerger, doccoUtil, fileUtil, getOptions, main, mergeAndWriteAllFiles, processAllDirs, processAllFiles, processOptionsFile, readOptionsFile, _;
+  var DocMerger, doccoCssDir, doccoCssFile, doccoPublicDir, doccoUtil, fileUtil, getOptions, main, mergeAndWriteAllFiles, path, processAllDirs, processAllFiles, processOptionsFile, readOptionsFile, _;
 
   fileUtil = require('./fileUtil').fileUtil;
+
+  path = require("path");
 
   DocMerger = require('./DocMerger').DocMerger;
 
   doccoUtil = require('./doccoUtil');
 
   _ = require('lodash');
+
+  doccoCssDir = "node_modules/docco/resources/parallel";
+
+  doccoCssFile = "docco.css";
+
+  doccoPublicDir = "public";
 
   readOptionsFile = function() {
     return fileUtil.readJson('cleandocs.json');
@@ -32,6 +40,10 @@
     var defaultTagOrder, docDir, docSuffix, docTagEnd, docTagStart, docco, outputDir, outputSuffix, srcDir, srcSuffix, srcTagEnd, srcTagStart;
     docDir = options.docDir, docSuffix = options.docSuffix, docTagStart = options.docTagStart, docTagEnd = options.docTagEnd, srcDir = options.srcDir, srcSuffix = options.srcSuffix, srcTagStart = options.srcTagStart, srcTagEnd = options.srcTagEnd, outputDir = options.outputDir, outputSuffix = options.outputSuffix, defaultTagOrder = options.defaultTagOrder, docco = options.docco;
     fileUtil.cleanDirectory(outputDir);
+    if (docco) {
+      fileUtil.copyFile(doccoCssDir, doccoCssFile, options.outputDir);
+      fileUtil.copyFile(doccoCssDir, doccoPublicDir, options.outputDir);
+    }
     return _.each(pairedFiles, function(docFile, docFileName) {
       var docLines, mergedFile, outFileName, srcFileName, srcLines;
       docLines = fileUtil.getFileLines(docDir, docFileName);

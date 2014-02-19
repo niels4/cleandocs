@@ -14,6 +14,12 @@ fileUtil =
       fs.lstatSync(path.join baseDir, relPath).isFile()
     catch e
       false
+
+  dirExists: (baseDir, relPath) ->
+    try
+      fs.lstatSync(path.join baseDir, relPath).isDirectory()
+    catch e
+      false
       
   pairSourceFiles: (srcDir, srcSuffix, docSuffix, docFiles) ->
     docFiles.reduce(((acc, docFile)->
@@ -35,6 +41,12 @@ fileUtil =
     newFilePath = path.join newDir, newFileName
     oldFilePath = path.join oldDir, fileName
     fs.copySync oldFilePath, newFilePath
+
+  copyFile: (fromBaseDir, fromFile, toBaseDir, toFile) ->
+    toFile ?= fromFile
+    fs.copySync(path.join(fromBaseDir, fromFile),
+      path.join(toBaseDir, toFile))
+
 
   getFileLines: (baseDir, relPath) ->
     fs.readFileSync(path.join(baseDir, relPath)).toString().split('\n')

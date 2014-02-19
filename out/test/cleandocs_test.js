@@ -39,7 +39,7 @@
     });
     return describe('mergeAndWriteAllFiles ->', function() {
       var expectedDocFiles, options, pairedFiles;
-      expectedDocFiles = ['README.litcoffee', 'subdir1/subdir2/subdirFile3.litcoffee', 'subdir1/subdirFile1.litcoffee', 'subdir1/subdirFile2.litcoffee', 'docco.css'];
+      expectedDocFiles = ['README.litcoffee', 'subdir1/subdir2/subdirFile3.litcoffee', 'subdir1/subdirFile1.litcoffee', 'subdir1/subdirFile2.litcoffee'];
       pairedFiles = {
         'README.md': {},
         'subdir1/subdir2/subdirFile3.md': {
@@ -82,10 +82,14 @@
           return cleandocs.mergeAndWriteAllFiles(pairedFiles, options);
         });
         expectedDoccoFiles = ['README.html', 'subdir1/subdir2/subdirFile3.html', 'subdir1/subdirFile1.html', 'subdir1/subdirFile2.html'];
-        return it('should run each merged file through docco', function() {
+        it('should run each merged file through docco', function() {
           return _.forEach(expectedDoccoFiles, function(nextExpectFile) {
             return fileUtil.fileExists(options.outputDir, nextExpectFile).should.be["true"];
           });
+        });
+        return it('should copy over the static css files and assets', function() {
+          fileUtil.fileExists(options.outputDir, 'docco.css').should.be["true"];
+          return fileUtil.dirExists(options.outputDir, 'public').should.be["true"];
         });
       });
     });

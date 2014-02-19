@@ -24,6 +24,15 @@
         return false;
       }
     },
+    dirExists: function(baseDir, relPath) {
+      var e;
+      try {
+        return fs.lstatSync(path.join(baseDir, relPath)).isDirectory();
+      } catch (_error) {
+        e = _error;
+        return false;
+      }
+    },
     pairSourceFiles: function(srcDir, srcSuffix, docSuffix, docFiles) {
       return docFiles.reduce((function(acc, docFile) {
         var docFilePair, srcFile;
@@ -45,6 +54,12 @@
       newFilePath = path.join(newDir, newFileName);
       oldFilePath = path.join(oldDir, fileName);
       return fs.copySync(oldFilePath, newFilePath);
+    },
+    copyFile: function(fromBaseDir, fromFile, toBaseDir, toFile) {
+      if (toFile == null) {
+        toFile = fromFile;
+      }
+      return fs.copySync(path.join(fromBaseDir, fromFile), path.join(toBaseDir, toFile));
     },
     getFileLines: function(baseDir, relPath) {
       return fs.readFileSync(path.join(baseDir, relPath)).toString().split('\n');

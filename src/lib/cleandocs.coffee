@@ -1,7 +1,12 @@
 {fileUtil} = require './fileUtil'
+path = require "path"
 {DocMerger} = require './DocMerger'
 doccoUtil = require './doccoUtil'
 _ = require 'lodash'
+
+doccoCssDir = "node_modules/docco/resources/parallel"
+doccoCssFile = "docco.css"
+doccoPublicDir = "public"
 
 readOptionsFile = ->
   fileUtil.readJson 'cleandocs.json'
@@ -23,7 +28,12 @@ mergeAndWriteAllFiles = (pairedFiles, options) ->
   {docDir, docSuffix, docTagStart, docTagEnd, srcDir, srcSuffix, srcTagStart,
     srcTagEnd, outputDir, outputSuffix, defaultTagOrder, docco} = options
 
+
   fileUtil.cleanDirectory outputDir
+
+  if docco
+    fileUtil.copyFile doccoCssDir, doccoCssFile, options.outputDir
+    fileUtil.copyFile doccoCssDir, doccoPublicDir, options.outputDir
 
   _.each pairedFiles, (docFile, docFileName) ->
     docLines = fileUtil.getFileLines docDir, docFileName
@@ -41,7 +51,6 @@ mergeAndWriteAllFiles = (pairedFiles, options) ->
         srcLines: srcLines
     else
       mergedFile = docLines.join "\n"
-
 
     if docco
       doccoUtil.doccoFile outFileName, mergedFile, outputDir
