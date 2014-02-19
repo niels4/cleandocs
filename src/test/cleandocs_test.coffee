@@ -39,6 +39,7 @@ describe 'cleandocs', ->
       'subdir1/subdir2/subdirFile3.litcoffee'
       'subdir1/subdirFile1.litcoffee'
       'subdir1/subdirFile2.litcoffee'
+      'docco.css'
     ]
 
     pairedFiles =

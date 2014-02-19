@@ -24,7 +24,7 @@
     output = path.join(baseOutput, path.dirname(fileName));
     source = path.basename(fileName);
     fs.mkdirsSync(output);
-    css = path.relative(fileName, "docco.css");
+    css = path.relative(path.join(baseOutput, fileName, "../"), path.join(baseOutput, "docco.css"));
     template = function(templateArgs) {
       templateArgs.css = css;
       return jstTemplate(templateArgs);

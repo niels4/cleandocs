@@ -39,7 +39,7 @@
     });
     return describe('mergeAndWriteAllFiles ->', function() {
       var expectedDocFiles, options, pairedFiles;
-      expectedDocFiles = ['README.litcoffee', 'subdir1/subdir2/subdirFile3.litcoffee', 'subdir1/subdirFile1.litcoffee', 'subdir1/subdirFile2.litcoffee'];
+      expectedDocFiles = ['README.litcoffee', 'subdir1/subdir2/subdirFile3.litcoffee', 'subdir1/subdirFile1.litcoffee', 'subdir1/subdirFile2.litcoffee', 'docco.css'];
       pairedFiles = {
         'README.md': {},
         'subdir1/subdir2/subdirFile3.md': {
